@@ -25,32 +25,32 @@ def generate_arrays_from_file(log_csv, batch_size=32):
     driving_log = pd.read_csv(os.path.join('data', log_csv))
     num_of_samples = len(driving_log)
     while True:
-            X = []
-            y = []
+        X = []
+        y = []
 
-            for i in range(batch_size):
-                # select idx
-                idx = np.random.randint(0, num_of_samples)
-                # select camera, 0 center, 1 left, 2 right
-                camera = np.random.randint(0, 3)
+        for i in range(batch_size):
+            # select idx
+            idx = np.random.randint(0, num_of_samples)
+            # select camera, 0 center, 1 left, 2 right
+            camera = np.random.randint(0, 3)
 
-                filename = driving_log.iloc[idx][camera].strip()
-                steering = driving_log.iloc[idx]['steering']
-                if camera == 1:
-                    steering += 0.15
-                elif camera == 2:
-                    steering -= 0.15
-                img = cv2.imread(os.path.join('data', filename))
-                img = preprocessing(img)
-                # select mirror
-                if np.random.randint(0, 2) == 1:
-                    img = img[:, ::-1, :]
-                    steering = -steering
+            filename = driving_log.iloc[idx][camera].strip()
+            steering = driving_log.iloc[idx]['steering']
+            if camera == 1:
+                steering += 0.15
+            elif camera == 2:
+                steering -= 0.15
+            img = cv2.imread(os.path.join('data', filename))
+            img = preprocessing(img)
+            # select mirror
+            if np.random.randint(0, 2) == 1:
+                img = img[:, ::-1, :]
+                steering = -steering
 
-                X.append(img)
-                y.append(steering)
-            assert len(X) == batch_size
-            yield np.array(X), np.array(y)
+            X.append(img)
+            y.append(steering)
+        assert len(X) == batch_size
+        yield np.array(X), np.array(y)
 
 def delete_file(filename):
     try:
