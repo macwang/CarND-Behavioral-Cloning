@@ -14,7 +14,7 @@ def preprocessing(img):
     img_tmp = cv2.resize(img_tmp, (200, 66))
 
     # convert it to YUV
-    img_tmp = cv2.cvtColor(img_tmp, cv2.COLOR_BGR2YUV)
+    img_tmp = cv2.cvtColor(img_tmp, cv2.COLOR_RGB2YUV)
 
     # normalize
     img_tmp = img_tmp / 128.0 - 1.0
@@ -41,6 +41,7 @@ def generate_arrays_from_file(log_csv, batch_size=32):
             elif camera == 2:
                 steering -= 0.15
             img = cv2.imread(os.path.join('data', filename))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = preprocessing(img)
             # select mirror
             if np.random.randint(0, 2) == 1:
