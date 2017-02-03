@@ -87,3 +87,11 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# data files
+data/
+data.zip
+
+# model files
+model.h5
+model.json
