@@ -37,9 +37,9 @@ def generate_arrays_from_file(log_csv, batch_size=32):
             filename = driving_log.iloc[idx][camera].strip()
             steering = driving_log.iloc[idx]['steering']
             if camera == 1:
-                steering += 0.15
+                steering += 0.20
             elif camera == 2:
-                steering -= 0.15
+                steering -= 0.20
             img = cv2.imread(os.path.join('data', filename))
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img = preprocessing(img)
