@@ -53,6 +53,23 @@ def generate_arrays_from_file(log_csv, batch_size=32):
         assert len(X) == batch_size
         yield np.array(X), np.array(y)
 
+def generate_arrays_from_dataframe(df, batch_size=32):
+    while True:
+        for i in range(0, len(df), batch_size):
+            X = []
+            y = []
+            for j in range(i, i+batch_size):
+                if j >= len(df):
+                    break
+                filename = df.iloc[j]['images'].strip()
+                steering = df.iloc[j]['steering']
+                img = cv2.imread(os.path.join('data', filename))
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                img = preprocessing(img)
+                X.append(img)
+                y.append(steering)
+            yield np.array(X), np.array(y)
+
 def delete_file(filename):
     try:
         os.remove(filename)
