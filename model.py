@@ -39,12 +39,22 @@ train_samples, validation_samples = train_test_split(driving_log, test_size=0.2)
 
 center_train = train_samples[['center', 'steering']]
 center_train.columns = ['images', 'steering']
+# drop 80% of steering 0.0 samples
+idx = center_train[center_train['steering'] == 0.0].sample(frac=.8).index
+center_train = center_train.drop(idx)
+
 left_train = train_samples[['left', 'steering']]
 left_train.columns = ['images', 'steering']
+idx = left_train[left_train['steering'] == 0.0].sample(frac=.8).index
+left_train = left_train.drop(idx)
 left_train['steering'] += OFFSET
+
 right_train = train_samples[['right', 'steering']]
 right_train.columns = ['images', 'steering']
+idx = right_train[right_train['steering'] == 0.0].sample(frac=.8).index
+right_train = right_train.drop(idx)
 right_train['steering'] -= OFFSET
+
 t_samples = center_train.append(left_train).append(right_train)
 t_samples = shuffle(t_samples)
 
