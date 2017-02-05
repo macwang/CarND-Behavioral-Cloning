@@ -14,7 +14,7 @@ def preprocessing(img):
     img_tmp = cv2.resize(img_tmp, (200, 66))
 
     # convert it to YUV
-    img_tmp = cv2.cvtColor(img_tmp, cv2.COLOR_RGB2YUV)
+    # img_tmp = cv2.cvtColor(img_tmp, cv2.COLOR_RGB2YUV)
 
     # normalize
     img_tmp = img_tmp / 128.0 - 1.0
@@ -55,20 +55,24 @@ def generate_arrays_from_file(log_csv, batch_size=32):
 
 def generate_arrays_from_dataframe(df, batch_size=32):
     while True:
-        for i in range(0, len(df), batch_size):
-            X = []
-            y = []
-            for j in range(i, i+batch_size):
-                if j >= len(df):
-                    break
-                filename = df.iloc[j]['images'].strip()
-                steering = df.iloc[j]['steering']
-                img = cv2.imread(os.path.join('data', filename))
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                img = preprocessing(img)
-                X.append(img)
-                y.append(steering)
-            yield np.array(X), np.array(y)
+        for flip in range(2):
+            for i in range(0, len(df), batch_size):
+                X = []
+                y = []
+                for j in range(i, i+batch_size):
+                    if j >= len(df):
+                        break
+                    filename = df.iloc[j]['images'].strip()
+                    steering = df.iloc[j]['steering']
+                    img = cv2.imread(os.path.join('data', filename))
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+                    img = preprocessing(img)
+                    if flip:
+                        img = img[:, ::-1, :]
+                        steering = -steering
+                    X.append(img)
+                    y.append(steering)
+                yield np.array(X), np.array(y)
 
 def delete_file(filename):
     try:

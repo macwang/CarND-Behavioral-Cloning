@@ -26,7 +26,7 @@ model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu'))
 model.add(Flatten())
 model.add(Dropout(0.5))
 model.add(Dense(100, activation='relu'))
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1))
@@ -63,7 +63,7 @@ v_samples.columns = ['images', 'steering']
 v_samples = shuffle(v_samples)
 
 history = model.fit_generator(helper.generate_arrays_from_dataframe(t_samples),
-                              len(t_samples), EPOCHS,
+                              len(t_samples)*2, EPOCHS,
                               validation_data=helper.generate_arrays_from_dataframe(v_samples),
                               nb_val_samples=len(v_samples))
 
