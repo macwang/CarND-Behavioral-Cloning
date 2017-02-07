@@ -41,7 +41,7 @@ def generate_arrays_from_file(log_csv, batch_size=32):
             elif camera == 2:
                 steering -= 0.20
             img = cv2.imread(os.path.join('data', filename))
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
             img = preprocessing(img)
             # select mirror
             if np.random.randint(0, 2) == 1:
