@@ -13,11 +13,8 @@ def preprocessing(img):
     # resize 99x300 ==> 66x200
     img_tmp = cv2.resize(img_tmp, (200, 66))
 
-    # convert it to YUV
-    # img_tmp = cv2.cvtColor(img_tmp, cv2.COLOR_RGB2YUV)
-
     # normalize
-    img_tmp = img_tmp / 128.0 - 1.0
+    img_tmp = img_tmp / 127.5 - 1.0
 
     return img_tmp
 
@@ -33,7 +30,7 @@ def generate_arrays_from_dataframe(df, batch_size=32):
                     filename = df.iloc[j]['images'].strip()
                     steering = df.iloc[j]['steering']
                     img = cv2.imread(os.path.join('data', filename))
-                    img = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
                     img = preprocessing(img)
                     if flip:
                         img = img[:, ::-1, :]
