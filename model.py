@@ -16,7 +16,7 @@ import helper
 OFFSET = 0.2
 EPOCHS = 8
 
-# model start
+# model start (NV model)
 model = Sequential()
 model.add(Lambda(lambda x: x/127.5-1.0, input_shape=(66, 200, 3)))
 model.add(Convolution2D(24, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
@@ -61,8 +61,8 @@ v_samples.columns = ['images', 'steering']
 v_samples = shuffle(v_samples)
 
 history = model.fit_generator(helper.generate_arrays_from_dataframe(t_samples),
-                              len(t_samples), EPOCHS,
-                              validation_data=helper.generate_arrays_from_dataframe(v_samples),
+                              len(t_samples)*2, EPOCHS,
+                              validation_data=helper.generate_arrays_from_dataframe(v_samples, augmentation=False),
                               nb_val_samples=len(v_samples))
 
 helper.save_model(model)

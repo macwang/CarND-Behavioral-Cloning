@@ -39,11 +39,11 @@ def preprocessing(img, steering=0.0, augmentation=True):
     img_tmp = cv2.resize(img_tmp, (200, 66))
 
     # normalize
-    img_tmp = img_tmp / 127.5 - 1.0
+    # img_tmp = img_tmp / 127.5 - 1.0
 
     return img_tmp, new_steering
 
-def generate_arrays_from_dataframe(df, batch_size=32):
+def generate_arrays_from_dataframe(df, batch_size=32, augmentation=True):
     while True:
         for i in range(0, len(df), batch_size):
             X = []
@@ -55,7 +55,11 @@ def generate_arrays_from_dataframe(df, batch_size=32):
                 steering = df.iloc[j]['steering']
                 img = cv2.imread(os.path.join('data', filename))
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-                img, steering = preprocessing(img, steering)
+                threshold = np.random.rand()
+                while True:
+                    img, steering = preprocessing(img, steering, augmentation)
+                    if abs(steering) + 0.8 > threshold:
+                        break
                 X.append(img)
                 y.append(steering)
             yield np.array(X), np.array(y)
