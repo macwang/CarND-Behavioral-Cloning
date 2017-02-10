@@ -33,10 +33,10 @@ model.summary()
 # model end
 
 driving_log = pd.read_csv(os.path.join('data', 'driving_log.csv'))
-train_samples, validation_samples = train_test_split(driving_log, test_size=0.2)
+train_samples, validation_samples = train_test_split(driving_log, test_size=cg.test_size)
 
 # Drop 85% of steering 0.0 samples
-idx = train_samples[train_samples['steering'] == 0.0].sample(frac=.85).index
+idx = train_samples[train_samples['steering'] == 0.0].sample(frac=cg.drop_zero_rate).index
 train_samples = train_samples.drop(idx)
 
 center_train = train_samples[['center', 'steering']]
@@ -44,6 +44,8 @@ center_train.columns = ['images', 'steering']
 
 left_train = train_samples[['left', 'steering']]
 left_train.columns = ['images', 'steering']
+# for surpressing SettingWithCopyWarning
+pd.options.mode.chained_assignment = None
 left_train['steering'] += cg.offset
 
 right_train = train_samples[['right', 'steering']]

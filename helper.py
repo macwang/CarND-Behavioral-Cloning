@@ -6,7 +6,7 @@ import cv2
 import json
 import errno
 
-alpha = 0.0025
+import config as cg
 
 def preprocessing(img, steering=0.0, augmentation=True):
     new_steering = steering
@@ -23,7 +23,7 @@ def preprocessing(img, steering=0.0, augmentation=True):
             shift = np.random.randint(80)
             M = np.float32([[1,0,shift],[0,1,0]])
             img_tmp = cv2.warpAffine(img_tmp, M, (300, 99))
-            new_steering += alpha * shift
+            new_steering += cg.alpha * shift
 
         # flip
         if np.random.randint(2) == 1:
@@ -58,7 +58,7 @@ def generate_arrays_from_dataframe(df, batch_size=32, augmentation=True):
                 threshold = np.random.rand()
                 while True:
                     img, steering = preprocessing(img, steering, augmentation)
-                    if not augmentation or abs(steering) + 0.8 > threshold:
+                    if not augmentation or abs(steering) + cg.bias > threshold:
                         break
                 X.append(img)
                 y.append(steering)
