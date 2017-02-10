@@ -58,7 +58,7 @@ def generate_arrays_from_dataframe(df, batch_size=32, augmentation=True):
                 threshold = np.random.rand()
                 while True:
                     img, steering = preprocessing(img, steering, augmentation)
-                    if abs(steering) + 0.8 > threshold:
+                    if not augmentation or abs(steering) + 0.8 > threshold:
                         break
                 X.append(img)
                 y.append(steering)

@@ -11,10 +11,7 @@ from keras.layers.core import Flatten, Dropout, Lambda
 from keras.layers.convolutional import Convolution2D
 
 import helper
-
-# hyperparameters
-OFFSET = 0.2
-EPOCHS = 8
+import config as cg
 
 # model start (NV model)
 model = Sequential()
@@ -40,18 +37,18 @@ train_samples, validation_samples = train_test_split(driving_log, test_size=0.2)
 
 # Drop 85% of steering 0.0 samples
 idx = train_samples[train_samples['steering'] == 0.0].sample(frac=.85).index
-train_samples.drop(idx, inplace=True)
+train_samples = train_samples.drop(idx)
 
 center_train = train_samples[['center', 'steering']]
 center_train.columns = ['images', 'steering']
 
 left_train = train_samples[['left', 'steering']]
 left_train.columns = ['images', 'steering']
-left_train['steering'] += OFFSET
+left_train['steering'] += cg.offset
 
 right_train = train_samples[['right', 'steering']]
 right_train.columns = ['images', 'steering']
-right_train['steering'] -= OFFSET
+right_train['steering'] -= cg.offset
 
 t_samples = center_train.append(left_train).append(right_train)
 t_samples = shuffle(t_samples)
@@ -61,7 +58,7 @@ v_samples.columns = ['images', 'steering']
 v_samples = shuffle(v_samples)
 
 history = model.fit_generator(helper.generate_arrays_from_dataframe(t_samples),
-                              len(t_samples)*2, EPOCHS,
+                              len(t_samples)*2, cg.epoch,
                               validation_data=helper.generate_arrays_from_dataframe(v_samples, augmentation=False),
                               nb_val_samples=len(v_samples))
 
