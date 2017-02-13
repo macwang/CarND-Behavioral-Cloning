@@ -13,9 +13,6 @@ def preprocessing(img):
     # resize 99x300 ==> 66x200
     img_tmp = cv2.resize(img_tmp, (200, 66))
 
-    # normalize
-    img_tmp = img_tmp / 127.5 - 1.0
-
     return img_tmp
 
 def generate_arrays_from_dataframe(df, batch_size=32):

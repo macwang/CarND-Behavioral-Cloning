@@ -7,7 +7,7 @@ from sklearn.utils import shuffle
 
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers.core import Flatten, Dropout
+from keras.layers.core import Flatten, Dropout, Lambda
 from keras.layers.convolutional import Convolution2D
 
 import helper
@@ -18,7 +18,8 @@ EPOCHS = 8
 
 # model start
 model = Sequential()
-model.add(Convolution2D(24, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2), input_shape=(66, 200, 3)))
+model.add(Lambda(lambda x: x/127.5-1.0, input_shape=(66, 200, 3)))
+model.add(Convolution2D(24, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(36, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(48, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu'))
@@ -31,6 +32,7 @@ model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1))
 model.compile('adam', 'mse')
+model.summary()
 # model end
 
 driving_log = pd.read_csv(os.path.join('data', 'driving_log.csv'))
