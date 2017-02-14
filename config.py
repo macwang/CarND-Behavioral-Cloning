@@ -6,6 +6,6 @@ offset = 0.2
 test_size = 0.2
 drop_zero_rate = 0.85
 
-alpha = 0.0025
+alpha = 0.015
 
 bias = 0.8

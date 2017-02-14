@@ -20,7 +20,7 @@ def preprocessing(img, steering=0.0, augmentation=True):
         if np.random.randint(2) == 1:
             # the image width is 300, half is 150. I choose 1/3 of it.
             # Always shift to right, the next flip step may make it shift to left
-            shift = np.random.randint(80)
+            shift = np.random.randint(30)
             M = np.float32([[1,0,shift],[0,1,0]])
             img_tmp = cv2.warpAffine(img_tmp, M, (300, 99))
             new_steering += cg.alpha * shift
