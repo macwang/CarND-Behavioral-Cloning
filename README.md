@@ -107,11 +107,13 @@ Only the center image in the validation set were used for validation. And it doe
 
 ## Test on the simulator
 
-The trained model can successfully drive along the track 1. I noticed the model behaves differently in different computer. Surprisings that it ran zig-zag in the track 1 but it ran smoothly in the unseen track 2.
+I found the simulator is very sensitive to the PC loading. It behaves differently when I doing something else at the same time. The model works better when I ran it alone than the recorded one. It seems the quicktime desktop recorder also used a lot of CPU time and it made the drive.py can't response in time.
+
+The trained model can successfully drive along the track 1. Surprisings that it ran zig-zag in the track 1 but it ran smoothly in the unseen track 2.
 
 ### Track 1
 
-[![Track 1 Video](https://img.youtube.com/vi/OgkBx8GD89s/0.jpg)](https://www.youtube.com/watch?v=OgkBx8GD89s)
+[![Track 1 Video](https://img.youtube.com/vi/USQEW1GypHI/0.jpg)](https://www.youtube.com/watch?v=USQEW1GypHI)
 
 ### Track 2
 
